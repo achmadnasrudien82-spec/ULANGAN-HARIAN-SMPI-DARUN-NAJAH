@@ -10,7 +10,7 @@
       --islamic-green: #1b5e20;
       --islamic-light-green: #2e7d32;
       --accent-gold: #d4af37;
-      --bg-color: #f4f7f5;
+      --bg-overlay: rgba(255, 255, 255, 0.92); /* Overlay agar teks tetap jelas di atas background */
       --white: #ffffff;
       --text-dark: #2c3e50;
     }
@@ -23,14 +23,20 @@
     }
 
     body {
-      background-color: var(--bg-color);
       color: var(--text-dark);
       line-height: 1.6;
       padding-bottom: 40px;
+      min-height: 100vh;
+      /* Background Anime Default */
+      background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><rect width="100%" height="100%" fill="%23e8f5e9"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="%232e7d32" font-family="sans-serif">Tema Islamic Anime</text></svg>');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transition: background-image 0.5s ease-in-out;
     }
 
     header {
-      background: linear-gradient(135deg, var(--islamic-green), var(--islamic-light-green));
+      background: linear-gradient(135deg, rgba(27, 94, 32, 0.95), rgba(46, 125, 50, 0.95));
       color: var(--white);
       padding: 20px 15px;
       text-align: center;
@@ -77,11 +83,12 @@
     .container {
       max-width: 850px;
       margin: 30px auto;
-      background: var(--white);
+      background: rgba(255, 255, 255, 0.95);
       padding: 25px 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
       border-top: 5px solid var(--islamic-green);
+      backdrop-filter: blur(5px);
     }
 
     h2.section-title {
@@ -151,19 +158,9 @@
       white-space: nowrap;
     }
 
-    .anime-soal-img {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 2px solid var(--islamic-green);
-      margin: 12px 0;
-      display: block;
-    }
-
     .options-list {
       list-style: none;
-      margin-top: 10px;
+      margin-top: 15px;
     }
 
     .options-list li {
@@ -191,7 +188,7 @@
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
-      margin-top: 10px;
+      margin-top: 15px;
       font-size: 1rem;
     }
 
@@ -346,7 +343,6 @@
     @media (max-width: 600px) {
       .header-content { flex-direction: column; }
       .container { padding: 15px; }
-      .anime-soal-img { width: 100%; height: auto; }
     }
   </style>
 </head>
@@ -355,7 +351,7 @@
   <!-- Header Website -->
   <header>
     <div class="header-content">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUMB4=" id="logo-img" class="logo" alt="Logo Yayasan Salafiyah Darun Najah">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAA=" id="logo-img" class="logo" alt="Logo Yayasan Salafiyah Darun Najah">
       <div class="header-text">
         <h1 id="judul-smp" onclick="handleJudulClick()" title="Ketuk 3 kali untuk Akses Guru">SMP DARUN NAJAH</h1>
         <p>Ujian Harian Baca Tulis Al-Qur'an (BTQ)</p>
@@ -404,7 +400,7 @@
       <div class="score-box" id="res-skor">0</div>
       <div id="res-feedback" class="feedback-msg"></div>
 
-      <!-- Gambar Anime Selesai Mengerjakan -->
+      <!-- Gambar Anime Selesai -->
       <img src="" id="anime-finish" class="anime-finish-img" alt="Semangat Belajar Ya!">
 
       <div class="evaluasi-box" id="evaluasi-container">
@@ -457,41 +453,41 @@
   </div>
 
   <script>
-    // Asset Gambar Anime & Logo (Data URI Base64 Singkat untuk Demostrasi Visual)
+    // Asset Anime & Backgrounds
     const ASSETS = {
-      // Gambar Anime Berpose
-      melihatKeAtas: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><rect width='100%' height='100%' fill='%23a5d6a7'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='11' font-family='sans-serif' fill='%231b5e20'>Anime: Melihat ke Atas</text></svg>",
-      bengong: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><rect width='100%' height='100%' fill='%2381c784'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='11' font-family='sans-serif' fill='%231b5e20'>Anime: Bengong</text></svg>",
-      diAtasKuda: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><rect width='100%' height='100%' fill='%2366bb6a'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='11' font-family='sans-serif' fill='%23ffffff'>Anime: Di Atas Kuda</text></svg>",
+      // Background Anime Theme Versi Gambar
+      bgMelihatKeAtas: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='100%' height='100%' fill='%23c8e6c9'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='28' fill='%231b5e20' font-family='sans-serif'>[ Background Anime: Berpose Melihat Ke Atas ]</text></svg>",
+      bgBengong: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='100%' height='100%' fill='%23a5d6a7'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='28' fill='%231b5e20' font-family='sans-serif'>[ Background Anime: Berpose Bengong ]</text></svg>",
+      bgDiAtasKuda: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='100%' height='100%' fill='%2381c784'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='28' fill='%23ffffff' font-family='sans-serif'>[ Background Anime: Berpose Di Atas Kuda ]</text></svg>",
+      
+      // Selesai Ujian & Logo
       selesai: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='250' height='200' viewBox='0 0 250 200'><rect width='100%' height='100%' fill='%232e7d32'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='16' font-family='sans-serif' fill='%23ffffff'>Semangat Belajar Ya!</text></svg>",
       logoYayasan: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><circle cx='40' cy='40' r='38' fill='%231b5e20' stroke='%23d4af37' stroke-width='3'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='10' font-family='sans-serif' fill='%23ffffff'>LOGO NAJAH</text></svg>"
     };
 
-    // Bank Soal Utama (10 Pilihan Ganda & 10 Isian)
+    // Bank Soal Utama (10 PG & 10 Isian)
     const defaultSoalData = [
-      // Pilihan Ganda (10 Soal)
-      { id: 1, tipe: 'pg', tingkat: 'Mudah', pose: 'melihatKeAtas', pertanyaan: '1. Apabila nun sukun (نْ) atau tanwin bertemu dengan huruf hamzah (ء), hukum bacaannya adalah...', opsi: ['A. Idgham Bigunnah', 'B. Idzhar Halqi', 'C. Ikhfa Haqiqi', 'D. Iqlab'], kunci: 'B' },
-      { id: 2, tipe: 'pg', tingkat: 'Mudah', pose: 'bengong', pertanyaan: '2. Huruf-huruf Idgham Bighunnah terangkum dalam kata...', opsi: ['A. يَنْمُوْ', 'B. لَرَمَوْ', 'C. أَبْجَدْ', 'D. قُطْبُ جَدٍّ'], kunci: 'A' },
-      { id: 3, tipe: 'pg', tingkat: 'Sedang', pose: 'diAtasKuda', pertanyaan: '3. Membalikkan atau mengubah suara nun sukun/tanwin menjadi suara mim (م) dinamakan...', opsi: ['A. Idzhar', 'B. Iqlab', 'C. Ikhfa', 'D. Idgham Syafawi'], kunci: 'B' },
-      { id: 4, tipe: 'pg', tingkat: 'Sedang', pose: 'melihatKeAtas', pertanyaan: '4. Surah An-Nas diturunkan sebagai perlindungan dari kejahatan...', opsi: ['A. Hasad orang jahil', 'B. Bisikan setan dan manusia', 'C. Bencana alam', 'D. Api neraka'], kunci: 'B' },
-      { id: 5, tipe: 'pg', tingkat: 'Sulit', pose: 'bengong', pertanyaan: '5. Penyebab utama diturunkannya Surah Al-Falaq dan An-Nas (Mu\'awwidzatain) adalah...', opsi: ['A. Kisah Rasulullah terkena sihir Labid bin A\'sam', 'B. Perang Badar', 'C. Kelahiran Nabi Muhammad SAW', 'D. Hijrah ke Madinah'], kunci: 'A' },
-      { id: 6, tipe: 'pg', tingkat: 'Mudah', pose: 'diAtasKuda', pertanyaan: '6. Jumlah huruf Ikhfa Haqiqi terdiri dari ... huruf.', opsi: ['A. 6', 'B. 4', 'C. 15', 'D. 2'], kunci: 'C' },
-      { id: 7, tipe: 'pg', tingkat: 'Sedang', pose: 'melihatKeAtas', pertanyaan: '7. Surah Al-Kafirun menegaskan tentang sikap tegas dalam hal...', opsi: ['A. Perdagangan', 'B. Toleransi Akidah & Ibadah', 'C. Pola makan', 'D. Pembagian harta'], kunci: 'B' },
-      { id: 8, tipe: 'pg', tingkat: 'Sulit', pose: 'bengong', pertanyaan: '8. Surah Al-Ikhlas diturunkan sebagai jawaban atas pertanyaan kaum musyrikin mengenai...', opsi: ['A. Sifat dan nasab Allah', 'B. Hari Kiamat', 'C. Kisah Para Nabi', 'D. Hukum waris'], kunci: 'A' },
-      { id: 9, tipe: 'pg', tingkat: 'Sedang', pose: 'diAtasKuda', pertanyaan: '9. Surah Al-Lahab menceritakan tentang ancaman sisaan bagi Abu Lahab dan istrinya karena...', opsi: ['A. Menolak membayar zakat', 'B. Selalu menentang dan merintangi dakwah Nabi', 'C. Merusak Ka\'bah', 'D. Membunuh unta Nabi'], kunci: 'B' },
-      { id: 10, tipe: 'pg', tingkat: 'Sulit', pose: 'melihatKeAtas', pertanyaan: '10. Surah Al-Humazah berisi ancaman bagi orang yang suka mencela dan mengumpulkan...', opsi: ['A. Ilmu tanpa diamalkan', 'B. Harta dan mengira hartanya mengekalkannya', 'C. Senjata perang', 'D. Makanan berlebihan'], kunci: 'B' },
+      { id: 1, tipe: 'pg', tingkat: 'Mudah', pertanyaan: '1. Apabila nun sukun (نْ) atau tanwin bertemu dengan huruf hamzah (ء), hukum bacaannya adalah...', opsi: ['A. Idgham Bigunnah', 'B. Idzhar Halqi', 'C. Ikhfa Haqiqi', 'D. Iqlab'], kunci: 'B' },
+      { id: 2, tipe: 'pg', tingkat: 'Mudah', pertanyaan: '2. Huruf-huruf Idgham Bighunnah terangkum dalam kata...', opsi: ['A. يَنْمُوْ', 'B. لَرَمَوْ', 'C. أَبْجَدْ', 'D. قُطْبُ جَدٍّ'], kunci: 'A' },
+      { id: 3, tipe: 'pg', tingkat: 'Sedang', pertanyaan: '3. Membalikkan atau mengubah suara nun sukun/tanwin menjadi suara mim (م) dinamakan...', opsi: ['A. Idzhar', 'B. Iqlab', 'C. Ikhfa', 'D. Idgham Syafawi'], kunci: 'B' },
+      { id: 4, tipe: 'pg', tingkat: 'Sedang', pertanyaan: '4. Surah An-Nas diturunkan sebagai perlindungan dari kejahatan...', opsi: ['A. Hasad orang jahil', 'B. Bisikan setan dan manusia', 'C. Bencana alam', 'D. Api neraka'], kunci: 'B' },
+      { id: 5, tipe: 'pg', tingkat: 'Sulit', pertanyaan: '5. Penyebab utama diturunkannya Surah Al-Falaq dan An-Nas (Mu\'awwidzatain) adalah...', opsi: ['A. Kisah Rasulullah terkena sihir Labid bin A\'sam', 'B. Perang Badar', 'C. Kelahiran Nabi Muhammad SAW', 'D. Hijrah ke Madinah'], kunci: 'A' },
+      { id: 6, tipe: 'pg', tingkat: 'Mudah', pertanyaan: '6. Jumlah huruf Ikhfa Haqiqi terdiri dari ... huruf.', opsi: ['A. 6', 'B. 4', 'C. 15', 'D. 2'], kunci: 'C' },
+      { id: 7, tipe: 'pg', tingkat: 'Sedang', pertanyaan: '7. Surah Al-Kafirun menegaskan tentang sikap tegas dalam hal...', opsi: ['A. Perdagangan', 'B. Toleransi Akidah & Ibadah', 'C. Pola makan', 'D. Pembagian harta'], kunci: 'B' },
+      { id: 8, tipe: 'pg', tingkat: 'Sulit', pertanyaan: '8. Surah Al-Ikhlas diturunkan sebagai jawaban atas pertanyaan kaum musyrikin mengenai...', opsi: ['A. Sifat dan nasab Allah', 'B. Hari Kiamat', 'C. Kisah Para Nabi', 'D. Hukum waris'], kunci: 'A' },
+      { id: 9, tipe: 'pg', tingkat: 'Sedang', pertanyaan: '9. Surah Al-Lahab menceritakan tentang ancaman sisaan bagi Abu Lahab dan istrinya karena...', opsi: ['A. Menolak membayar zakat', 'B. Selalu menentang dan merintangi dakwah Nabi', 'C. Merusak Ka\'bah', 'D. Membunuh unta Nabi'], kunci: 'B' },
+      { id: 10, tipe: 'pg', tingkat: 'Sulit', pertanyaan: '10. Surah Al-Humazah berisi ancaman bagi orang yang suka mencela dan mengumpulkan...', opsi: ['A. Ilmu tanpa diamalkan', 'B. Harta dan mengira hartanya mengekalkannya', 'C. Senjata perang', 'D. Makanan berlebihan'], kunci: 'B' },
 
-      // Isian Singkat (10 Soal)
-      { id: 11, tipe: 'isian', tingkat: 'Mudah', pose: 'bengong', pertanyaan: '11. Sebutkan huruf Iqlab!', kunci: 'ba' },
-      { id: 12, tipe: 'isian', tingkat: 'Mudah', pose: 'diAtasKuda', pertanyaan: '12. Membaca nun sukun atau tanwin dengan jelas tanpa dengung disebut hukum...', kunci: 'idzhar' },
-      { id: 13, tipe: 'isian', tingkat: 'Sedang', pose: 'melihatKeAtas', pertanyaan: '13. Idgham Bilaghunnah terjadi jika nun sukun/tanwin bertemu dengan huruf Lam dan...', kunci: 'ra' },
-      { id: 14, tipe: 'isian', tingkat: 'Sedang', pose: 'bengong', pertanyaan: '14. Nama surah yang menceritakan pasukan gajah yang menyerang Ka\'bah adalah Surah...', kunci: 'al-fil' },
-      { id: 15, tipe: 'isian', tingkat: 'Sulit', pose: 'diAtasKuda', pertanyaan: '15. Surah Al-Ma\'un menjelaskan tentang ciri-ciri orang yang mendustakan...', kunci: 'agama' },
-      { id: 16, tipe: 'isian', tingkat: 'Mudah', pose: 'melihatKeAtas', pertanyaan: '16. Surah Al-Kautsar berisi perintah untuk shalat dan...', kunci: 'berkurban' },
-      { id: 17, tipe: 'isian', tingkat: 'Sedang', pose: 'bengong', pertanyaan: '17. Tempat keluarnya huruf hijaiyah saat membaca Al-Qur\'an dinamakan Mukhrajul...', kunci: 'huruf' },
-      { id: 18, tipe: 'isian', tingkat: 'Sulit', pose: 'diAtasKuda', pertanyaan: '18. Surah An-Nasr menceritakan tentang pertolongan Allah dan peristiwa kemenangan kota...', kunci: 'makkah' },
-      { id: 19, tipe: 'isian', tingkat: 'Sedang', pose: 'melihatKeAtas', pertanyaan: '19. Hukum membaca mim mati bertemu mim dinamakan Idgham...', kunci: 'mimi' },
-      { id: 20, tipe: 'isian', tingkat: 'Sulit', pose: 'bengong', pertanyaan: '20. Berdasarkan Asbabul Nuzul, surah Al-Quraysh menceritakan kebiasaan suku Quraisy berdagang pada musim dingin dan musim...', kunci: 'panas' }
+      { id: 11, tipe: 'isian', tingkat: 'Mudah', pertanyaan: '11. Sebutkan huruf Iqlab!', kunci: 'ba' },
+      { id: 12, tipe: 'isian', tingkat: 'Mudah', pertanyaan: '12. Membaca nun sukun atau tanwin dengan jelas tanpa dengung disebut hukum...', kunci: 'idzhar' },
+      { id: 13, tipe: 'isian', tingkat: 'Sedang', pertanyaan: '13. Idgham Bilaghunnah terjadi jika nun sukun/tanwin bertemu dengan huruf Lam dan...', kunci: 'ra' },
+      { id: 14, tipe: 'isian', tingkat: 'Sedang', pertanyaan: '14. Nama surah yang menceritakan pasukan gajah yang menyerang Ka\'bah adalah Surah...', kunci: 'al-fil' },
+      { id: 15, tipe: 'isian', tingkat: 'Sulit', pertanyaan: '15. Surah Al-Ma\'un menjelaskan tentang ciri-ciri orang yang mendustakan...', kunci: 'agama' },
+      { id: 16, tipe: 'isian', tingkat: 'Mudah', pertanyaan: '16. Surah Al-Kautsar berisi perintah untuk shalat dan...', kunci: 'berkurban' },
+      { id: 17, tipe: 'isian', tingkat: 'Sedang', pertanyaan: '17. Tempat keluarnya huruf hijaiyah saat membaca Al-Qur\'an dinamakan Mukhrajul...', kunci: 'huruf' },
+      { id: 18, tipe: 'isian', tingkat: 'Sulit', pertanyaan: '18. Surah An-Nasr menceritakan tentang pertolongan Allah dan peristiwa kemenangan kota...', kunci: 'makkah' },
+      { id: 19, tipe: 'isian', tingkat: 'Sedang', pertanyaan: '19. Hukum membaca mim mati bertemu mim dinamakan Idgham...', kunci: 'mimi' },
+      { id: 20, tipe: 'isian', tingkat: 'Sulit', pertanyaan: '20. Berdasarkan Asbabul Nuzul, surah Al-Quraysh menceritakan kebiasaan suku Quraisy berdagang pada musim dingin dan musim...', kunci: 'panas' }
     ];
 
     let soalData = JSON.parse(localStorage.getItem('soal_btq_darnaj')) || defaultSoalData;
@@ -501,6 +497,13 @@
     // Load logo
     document.getElementById('logo-img').src = ASSETS.logoYayasan;
     document.getElementById('anime-finish').src = ASSETS.selesai;
+
+    // Fungsi Mengubah Background Anime Tema secara Acak
+    function ubahBackgroundAnime() {
+      const bgList = [ASSETS.bgMelihatKeAtas, ASSETS.bgBengong, ASSETS.bgDiAtasKuda];
+      const randomBg = bgList[Math.floor(Math.random() * bgList.length)];
+      document.body.style.backgroundImage = `linear-gradient(var(--bg-overlay), var(--bg-overlay)), url("${randomBg}")`;
+    }
 
     // Rahasia Akses Guru (Ketuk 3 kali di Judul)
     function handleJudulClick() {
@@ -536,6 +539,8 @@
       document.getElementById('identitas-container').style.display = 'none';
       document.getElementById('ujian-container').style.display = 'block';
 
+      // Pasang background anime tema saat ujian dimulai
+      ubahBackgroundAnime();
       renderSoal();
     }
 
@@ -544,16 +549,13 @@
       const container = document.getElementById('soal-list');
       container.innerHTML = '';
 
-      soalData.forEach((s, idx) => {
-        let poseSrc = ASSETS[s.pose] || ASSETS.melihatKeAtas;
-        
+      soalData.forEach((s) => {
         let html = `
           <div class="soal-card">
             <div class="soal-header">
               <div class="soal-text">${s.pertanyaan}</div>
               <span class="badge-tingkat">Tingkat: ${s.tingkat}</span>
             </div>
-            <img src="${poseSrc}" class="anime-soal-img" alt="Ilustrasi Anime Soal">
         `;
 
         if (s.tipe === 'pg') {
